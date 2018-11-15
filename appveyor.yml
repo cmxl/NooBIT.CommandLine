@@ -1,0 +1,30 @@
+version: 0.0.0
+
+branches:
+  only:
+  - master
+
+skip_branch_with_pr: true
+skip_tags: true
+
+max_jobs: 1
+image: Visual Studio 2017
+configuration: Release
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: "{version}"
+  package_version: "{version}"
+  assembly_version: "{version}"
+  file_version: "{version}"
+  informational_version: "{version}"
+
+matrix:
+  fast_finish: true
+
+build_script:
+  - cmd: dotnet restore
+  - cmd: dotnet build NooBIT.CommandLine.sln -c Release /p:DebugType=Full
+
+test: off
