@@ -1,4 +1,8 @@
-version: 0.0.0
+version: 1.0.0
+
+environment:
+  nuget_token:
+      secure: PO8sXhEaOhP8azRCOM5D5vK9q85cHld1bE3BYd+8tpQ3afgyh+nFg/0vp+3ijioH
 
 branches:
   only:
@@ -26,5 +30,7 @@ matrix:
 build_script:
   - cmd: dotnet restore
   - cmd: dotnet build NooBIT.CommandLine.sln -c Release /p:DebugType=Full
+  - cmd: dotnet pack -c Release --no-build --include-symbols -o ..\..\artifacts /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+  - cmd: dotnet nuget push artifacts\NooBIT.CommandLine.%APPVEYOR_BUILD_VERSION%.nupkg -k %nuget_token% -s https://www.nuget.org/api/v2/package
 
 test: off
